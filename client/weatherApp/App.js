@@ -26,12 +26,13 @@ import {
 
 import Schedule from "./pages/Schedule";
 import RainPreference from "./pages/RainPreference";
+import HumidityPreference from "./pages/HumidityPreference";
 
 const App = () => {
   return (
     <View style={styles.body}>
       {/* <Schedule /> */}
-      <RainPreference />
+      <HumidityPreference />
     </View>
   );
 };

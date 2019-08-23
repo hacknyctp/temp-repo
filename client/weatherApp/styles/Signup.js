@@ -13,6 +13,10 @@ const Signup = StyleSheet.create({
         textAlign: "center",
         marginBottom: 20,
     },
+    defaultText: {
+        color: "white",
+        fontSize: 30,
+    },
     btnNext: {
         flex: 1,
         backgroundColor: "green",
@@ -39,7 +43,8 @@ const Signup = StyleSheet.create({
         width: "40%",
         marginLeft: 20,
         marginBottom: 10,
-    }
+    },
+
 });
 
 
