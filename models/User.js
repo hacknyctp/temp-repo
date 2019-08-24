@@ -13,4 +13,12 @@ const userSchema = new mongoose.Schema({
   }
 });
 
+// Example adding a schema method using "this"
+userSchema.methods.getEmail = function() {
+  return this.email;
+};
+userSchema.methods.getPassword = function() {
+  return this.password;
+};
+
 module.exports = mongoose.model("user", userSchema);
