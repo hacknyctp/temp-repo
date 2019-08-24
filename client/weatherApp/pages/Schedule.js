@@ -1,6 +1,7 @@
 import React from 'react';
 import Signup from '../styles/Signup'
 import { Text, View, TextInput, Button, Picker, TouchableOpacity } from 'react-native';
+import SignUp from './Signup';
 
 class Schedule extends React.Component {
     constructor() {
@@ -18,22 +19,20 @@ class Schedule extends React.Component {
         }
     }
 
-    //this helper function sends data to backend
-    //the api should send back data in a array.
-    sendData = () => {
-        // fetch()
-        // .then(result => {
-        //     this.setState({sent: true, data: [...result]});
-        // })
+    // this is helper is going to save the text in asyncStorage as a buffer 
+    saveData = () => {
+
 
     }
 
     //this helper function changes corresponding inputtext values
+    // the text comes from the daysOfTheWeek array that corresponds to each state
     inputText = (time, text) => {
         this.setState({ [text]: time });
     }
 
     render() {
+        // these days of the week are going to be mapped to correspond to each box and state
         const daysOfTheWeek = ["M", "Tu", "W", "Th", "F", "Sa", "Su"];
         return (
             // this is the main container
@@ -81,9 +80,11 @@ class Schedule extends React.Component {
                         )
                     })
                         //when the data is sent the component shows the weather for the day of the week 
+                        //the data is going to be mapped to show each week
                         : this.state.data.map(data => {
                             return (
                                 <View>
+                                    <Text style={SignUp.boxes}>{data}</Text>
                                 </View>
                             )
                         })
@@ -93,7 +94,7 @@ class Schedule extends React.Component {
                 {this.state.sent ? null :
                     <View style={{ flex: 1, width: "100%", alignItems: "center" }}>
                         <TouchableOpacity
-                            onPress={this.sendData}
+                            onPress={this.saveData}
                             style={Signup.btnNext}
                         >
                             <Text style={{ color: "white" }}> Next </Text>
