@@ -2,7 +2,6 @@ const express = require("express");
 const connectDB = require("./config/db"); // Grab the DB connection
 const path = require("path");
 const app = express();
-
 // Connect Database
 connectDB();
 
@@ -11,6 +10,7 @@ app.use(express.json({ extended: false })); //Now we can accept body data
 
 // Define Routes
 app.use("/api/auth", require("./routes/authRoutes"));
+app.use("/api/users", require("./routes/users"));
 
 // Serve static assets in production
 if (process.env.NODE_ENV === "production") {
