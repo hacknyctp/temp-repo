@@ -69,7 +69,7 @@ router.post(
       await user.save();
       console.log("4I made it!");
 
-      //Payload for jwt
+      //Payload  for jwt
       const payload = {
         user: {
           id: user.id
