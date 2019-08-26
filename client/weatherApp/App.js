@@ -1,87 +1,35 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
-
-import React, { Fragment } from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
-
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
+import React from 'react';
+import Login from './pages/Login.js'
+import Signup from './pages/Signup.js'
 import Schedule from "./pages/Schedule";
+import WelcomePage from "./pages/WelcomePage";
+import UserWeather from './pages/UserWeather.js'
 import RainPreference from "./pages/RainPreference";
 import HumidityPreference from "./pages/HumidityPreference";
-import Login from './pages/Login.js'
+import { createStackNavigator, createAppContainer } from "react-navigation";
 
 const App = () => {
-  /**
-   * TODO:
-   * Start the react nativation here
-   */
-
   return (
-    <View style={styles.body}>
-
-      <Schedule />
-      {/* <Login /> */}
-    </View>
+    <WelcomePage />
   );
 };
 
-const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
-    backgroundColor: "#01404D",
-    height: "100%"
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
-});
+//this is the navigators history 
+const AppNavigator = createStackNavigator({
+  Home: WelcomePage,
+  Login: Login,
+  SignUp: Signup,
+  Schedule: Schedule,
+  RainPreference: RainPreference,
+  HumidityPreference: HumidityPreference,
+  UserWeather: UserWeather
+}, {
+    initialRouteName: "UserWeather",
+    headerMode: 'none',
+    navigationOptions: {
+      headerVisible: false,
+    }
+  }
+);
 
-export default App;
+export default createAppContainer(AppNavigator);

@@ -3,37 +3,22 @@ import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 
 export default class WelcomePage extends Component {
 
-    /**
-     * TODO:
-     * This function should use react navigation to go to the loginPage
-     */
-    goToLogin = () => {
-
-    }
-
-    /**
-     * TODO:
-     * This funciton should procced the user to the next step in signing up
-     */
-    goToNextStep = () => {
-
-    }
 
     render() {
         return (
             <View style={styles.viewMainStyle}>
-                <Image style={styles.imageArr} source={require('./assets/iconfinder_Snow_Occasional_47313.png')} />
+                <Image style={styles.imageArr} source={require('../assets/iconfinder_Snow_Occasional_47313.png')} />
                 <Text style={styles.paragraph}>Wounldn't you like to have a personalized weather app to send you weather app to send you weather updates based off time, rain percentage, or humuduty level?</Text>
 
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={goToNextStep}
+                    onPress={() => this.props.navigation.navigate('UserWeather')}
                 >
-                    <Text style={styles.buttonTxt}> Yes I Do </Text>
+                    <Text style={styles.buttonTxt}> Yes </Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                    onPress={goToLogin}
+                    onPress={() => this.props.navigation.navigate('Login')}
                 >
                     <Text style={styles.text1}>Login</Text>
                 </TouchableOpacity>
@@ -82,7 +67,7 @@ const styles = StyleSheet.create({
         margin: 30
     },
     buttonTxt: { //TEXT FOR THE BUTTON
-        fontsize: 30,
+        fontSize: 30,
         color: '#ffffff',
         fontWeight: 'bold'
     }

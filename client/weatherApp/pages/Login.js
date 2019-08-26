@@ -46,7 +46,7 @@ export default class Login extends Component {
 
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={sendData}
+                    onPress={this.sendData}
                 >
                     <Text style={styles.buttonTxt}> Enter </Text>
                 </TouchableOpacity>
@@ -103,7 +103,8 @@ const styles = StyleSheet.create({
         alignContent: "center",
         alignItems: "center",
         backgroundColor: '#01404D',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        height: "100%",
     },
     imageArr: { //image attributes
         width: 150,
