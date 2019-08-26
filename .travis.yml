@@ -12,3 +12,4 @@ deploy:
   app: whether-api
   on:
     repo: hacknyctp/whether-app
+    branch: backend
