@@ -98,7 +98,7 @@ router.post(
       //When it expires they'll have to log back in
       jwt.sign(
         payload,
-        process.env.jwtSecret || config.get("jwtSecret"),
+        process.env.JWS || config.get("jwtSecret"),
         {
           expiresIn: 46000
         },
