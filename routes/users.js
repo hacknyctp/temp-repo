@@ -125,14 +125,14 @@ router.get("/weather", auth, async (req, res) => {
     console.log(user);
     const zip = user.zipCode;
     console.log(zip);
-
+    const API_KEY = config.get("OWM");
     const weather = await fetch(
-      // `https://api.darksky.net/forecast/8f5f8c216e72042abc1ee249745ed98c/37.8267,-122.4233`
-      `https://weather.cit.api.here.com/weather/1.0/report.json?product=observation&zipcode=${zip}&oneobservation=true&app_id=DemoAppId01082013GAL&app_code=AJKnXv84fjrb0KIHawS0Tg`
+      `http://api.openweathermap.org/data/2.5/weather?zip=${zip}&APPID=${API_KEY}`
     );
     const data = await weather.json();
-    await console.log(data.observations.location);
-    res.json(data.observations.location[0]["observation"][0]["skyDescription"]);
+    await console.log(data);
+    const weatherDesc = data.weather[0].description;
+    res.json(weatherDesc);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
