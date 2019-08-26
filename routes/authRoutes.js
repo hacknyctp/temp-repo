@@ -25,6 +25,7 @@ router.get("/", auth, async (req, res) => {
   }
 }); //Note that "/" here refers to the prefix of "api/users" + "/"
 
+//Sign in Authentication
 router.post(
   "/",
   [

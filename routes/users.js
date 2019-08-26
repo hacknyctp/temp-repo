@@ -12,7 +12,6 @@ const config = require("config");
 //DELETE: Remove something
 
 //Registering user--> Use a put req
-
 // @ route      POST api/users
 // @desc        Register a user
 // @access      Public
@@ -55,7 +54,7 @@ router.post(
 
       //User the user model to make a new user
       console.log("3I made it!");
-
+      //If the email is not already in use..
       user = new User({
         name: name,
         email: email,
