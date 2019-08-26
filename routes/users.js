@@ -98,7 +98,7 @@ router.post(
       //When it expires they'll have to log back in
       jwt.sign(
         payload,
-        config.get("jwtSecret"),
+        process.env.jwtSecret || config.get("jwtSecret"),
         {
           expiresIn: 46000
         },
@@ -125,7 +125,7 @@ router.get("/weather", auth, async (req, res) => {
     console.log(user);
     const zip = user.zipCode;
     console.log(zip);
-    const API_KEY = config.get("OWM");
+    const API_KEY = process.env.OWM || config.get("OWM");
     const weather = await fetch(
       `http://api.openweathermap.org/data/2.5/weather?zip=${zip}&APPID=${API_KEY}`
     );

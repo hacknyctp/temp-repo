@@ -14,7 +14,10 @@ module.exports = function(req, res, next) {
   //If there is a token..
   try {
     //Verify the Token in the header, pass in our JWT secret
-    const decoded = jwt.verify(token, config.get("jwtSecret"));
+    const decoded = jwt.verify(
+      token,
+      process.env.jwtSecret || config.get("jwtSecret")
+    );
     console.log(decoded);
     req.id = decoded.user.id;
     console.log(req.id);
