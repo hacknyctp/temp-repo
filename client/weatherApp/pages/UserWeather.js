@@ -31,6 +31,8 @@ export default class page3 extends Component {
                  *  Once the data is saved send the data to the weather api 
                  *  The data returned is going to show at the bottom where the button uus
                  */
+
+
                 this.setState({ dataSent: true });
 
                 /**
@@ -38,6 +40,8 @@ export default class page3 extends Component {
                  *  Once the button shows the current weather after 3 secs 
                  *  send the user to the next step
                  */
+
+
                 if (dataSent) {
                     setTimeout(() => {
                         this.props.navigation.navigate('RainPreference')
@@ -74,9 +78,10 @@ export default class page3 extends Component {
                     >
                         {/* an image should show here on the current weather */}
                     </TouchableOpacity> :
+
                     <TouchableOpacity
                         style={styles.button}
-                        onPress={this.onPressButton}
+                        onPress={this.storeData}
                     >
                         <Text style={styles.buttonTxt}>Press for the weather in your area </Text>
                     </TouchableOpacity>

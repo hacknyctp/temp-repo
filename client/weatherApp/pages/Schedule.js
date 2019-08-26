@@ -63,6 +63,7 @@ class Schedule extends React.Component {
          * TODO:
          * Change the placeholders to the picker
          */
+
         //checks if all of the values are not empty;
         const noEmptyStrings = value.every(innerArray => innerArray[1] != " ")
         // this changes the contexts and renders new data to the screen if all states have values

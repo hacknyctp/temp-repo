@@ -21,8 +21,6 @@ class RainPreference extends React.Component {
          */
 
 
-
-
     }
 
     render() {

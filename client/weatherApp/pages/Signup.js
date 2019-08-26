@@ -33,13 +33,15 @@ export default class SignUp extends Component {
                 'rainPercentage',
                 'humidityPercentage'
             ])
+
+
         } catch (error) {
             console.log(`There was an error => ${error}`)
         }
 
         /**
-         * TODO:
-         * send 'sentData' to the backend
+         * TODO: Alex
+         * map sendData to an object called body = {}
          * the format of the data is going to be a nested array
          * InnerArray[0] is the key
          * InnerArrar[1] is the value
@@ -47,7 +49,13 @@ export default class SignUp extends Component {
 
 
 
+        /**
+         * TODO: Alex
+         * call the api and check to see if it returns json token
+         * and save the json token in the async storage
+         */
 
+        //await AsyncStorage.setItem("jwt", "returned value");
     }
 
     onChangeHandler = (event, name) => {
