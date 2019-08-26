@@ -11,6 +11,9 @@ app.use(express.json({ extended: false })); //Now we can accept body data
 // Define Routes
 app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/users", require("./routes/users"));
+app.get("/api", function(req, res) {
+  res.send("Welcome to the API");
+});
 
 // Serve static assets in production
 if (process.env.NODE_ENV === "production") {
