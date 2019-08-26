@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "The weather app that tells you whether or not to bring an umbrella",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "start": "node index.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hacknyctp/whether-app.git"
