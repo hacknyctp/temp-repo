@@ -16,8 +16,11 @@ const auth = require("../middleware/requireAuth");
 //Anything we need to protect a route, we just need to use our middleware...
 router.get("/", auth, async (req, res) => {
   try {
-    // console.log(req);
-    const user = await User.findById(req.userId).select("-password"); // Return all but the PW
+    // console.log(req.body);
+    const id = req.id;
+    // console.log(id.user);
+    console.log(req.id);
+    const user = await User.findById(id).select("-password"); // Return all but the PW
     res.json(user);
   } catch (err) {
     console.error(err.message);

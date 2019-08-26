@@ -1,7 +1,7 @@
-const mongoose = require("mongoose"); //
+const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
-  name: {
+  username: {
     type: String,
     required: true
   },
@@ -13,7 +13,39 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true
-  }
+  },
+  rainPercentage: {
+    type: Number
+  },
+  humidityPercentage: { type: Number },
+  country: { type: String },
+  city: { type: String },
+  zipCode: { type: Number, default: 11216 },
+  M: {
+    type: String,
+    default: "8"
+  },
+  Tu: {
+    type: String,
+    default: "8"
+  },
+  W: {
+    type: String,
+    default: "8"
+  },
+  Th: {
+    type: String,
+    default: "8"
+  },
+  F: {
+    type: String,
+    default: "8"
+  },
+  Sa: {
+    type: String,
+    default: "8"
+  },
+  Su: { type: String, default: "8" }
 });
 
 // Example adding a schema method using "this"

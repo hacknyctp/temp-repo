@@ -16,7 +16,8 @@ module.exports = function(req, res, next) {
     //Verify the Token in the header, pass in our JWT secret
     const decoded = jwt.verify(token, config.get("jwtSecret"));
     console.log(decoded);
-    req.userId = decoded.userId;
+    req.id = decoded.user.id;
+    console.log(req.id);
     next(); // move on
   } catch (err) {
     res.status(401).json({

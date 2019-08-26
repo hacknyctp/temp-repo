@@ -5,6 +5,8 @@ const { check, validationResult } = require("express-validator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const config = require("config");
+const auth = require("../middleware/requireAuth");
+const fetch = require("node-fetch");
 
 //POST:Submitting some data/adding contact
 //GET:Fetch/getting data
@@ -19,7 +21,7 @@ const config = require("config");
 router.post(
   "/",
   [
-    check("name", "Please add a name")
+    check("username", "Please add a name")
       .not()
       .isEmpty(),
     check("email", "Please include a valid email").isEmail(),
@@ -39,8 +41,25 @@ router.post(
       }); //Send a error code and an array of the errors
     }
     //Pull out the data
-    const { name, email, password } = req.body;
-    console.log(email);
+    const {
+      username,
+      email,
+      password,
+      rainPercentage,
+      humidityPercentage,
+      country,
+      city,
+      zipCode,
+      M,
+      Tu,
+      W,
+      Th,
+      F,
+      Sa,
+      Su
+    } = req.body;
+    // const user = req.b
+    console.log(req.body);
     //Check to see if there is a user with that email
     try {
       let user = await User.findOne({
@@ -56,7 +75,7 @@ router.post(
       console.log("3I made it!");
       //If the email is not already in use..
       user = new User({
-        name: name,
+        username: username,
         email: email,
         password: password
       });
@@ -96,5 +115,28 @@ router.post(
     }
   }
 ); //Note that "/" here refers to the prefix of "api/users" + "/"
+
+//Get users' weather
+
+router.get("/weather", auth, async (req, res) => {
+  try {
+    // Grab the user
+    const user = await User.findById(req.id).select("-password"); //
+    console.log(user);
+    const zip = user.zipCode;
+    console.log(zip);
+
+    const weather = await fetch(
+      // `https://api.darksky.net/forecast/8f5f8c216e72042abc1ee249745ed98c/37.8267,-122.4233`
+      `https://weather.cit.api.here.com/weather/1.0/report.json?product=observation&zipcode=${zip}&oneobservation=true&app_id=DemoAppId01082013GAL&app_code=AJKnXv84fjrb0KIHawS0Tg`
+    );
+    const data = await weather.json();
+    await console.log(data.observations.location);
+    res.json(data.observations.location[0]["observation"][0]["skyDescription"]);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+}); //Note that "/" here refers to the prefix of "api/users" + "/"
 
 module.exports = router;
