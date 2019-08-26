@@ -17,43 +17,45 @@ const userSchema = new mongoose.Schema({
   rainPercentage: {
     type: Number
   },
-  humidityPercentage: { type: Number },
-  country: { type: String },
-  city: { type: String },
-  zipCode: { type: Number, default: 11216 },
+  humidityPercentage: {
+    type: Number
+  },
+  country: {
+    type: String
+  },
+  city: {
+    type: String
+  },
+  zipCode: {
+    type: Number,
+    default: 11216
+  },
   M: {
-    type: String,
-    default: "8"
+    type: String
   },
   Tu: {
-    type: String,
-    default: "8"
+    type: String
   },
   W: {
-    type: String,
-    default: "8"
+    type: String
   },
   Th: {
-    type: String,
-    default: "8"
+    type: String
   },
   F: {
-    type: String,
-    default: "8"
+    type: String
   },
   Sa: {
-    type: String,
-    default: "8"
+    type: String
   },
-  Su: { type: String, default: "8" }
+  Su: {
+    type: String
+  }
 });
 
 // Example adding a schema method using "this"
 userSchema.methods.getEmail = function() {
   return this.email;
-};
-userSchema.methods.getPassword = function() {
-  return this.password;
 };
 
 module.exports = mongoose.model("user", userSchema);
