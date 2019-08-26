@@ -27,12 +27,13 @@ import {
 import Schedule from "./pages/Schedule";
 import RainPreference from "./pages/RainPreference";
 import HumidityPreference from "./pages/HumidityPreference";
+import Login from './pages/Login.js'
 
 const App = () => {
   return (
     <View style={styles.body}>
-      {/* <Schedule /> */}
-      <HumidityPreference />
+      <Schedule />
+      {/* <Login /> */}
     </View>
   );
 };
