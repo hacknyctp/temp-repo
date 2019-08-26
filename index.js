@@ -7,7 +7,7 @@ connectDB();
 
 // Init Middleware
 app.use(express.json({ extended: false })); //Now we can accept body data
-
+process.env.NODE_ENV = "production";
 // Define Routes
 app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/users", require("./routes/users"));
