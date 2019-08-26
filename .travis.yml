@@ -1,6 +1,14 @@
 language: node_js
-node_js: 
-  - "stable"
+node_js:
+  - stable
 cache:
   directories:
-    - "node_modules"
+    - node_modules
+deploy:
+  provider: heroku
+  api_key:
+    secure: psthWgKZkO5X5e4iTLNqwVrm+FXrGya3jUFYfZS2UvxKKZyAb83H5HZzDg2Qy+uMlxvwaW/M9yhRDnZK8+FGi7WPwOzK2PhszdcX08zzU5kVKf9gONubjp2+BYExUt0D3Sp/QW7wi5yf3IGXPlFtNYNrSGQo8WgOd7gELNGdPHMk8GFc2iJfEegs8w0tR42EK5vCeyB47b0Bx9xnFhdXSZDLPygapku0ifL4Qmn5gQpzbeC/O0dRGm7+FuC8Zyp5BoRJo9/sypm0n8MKgi0a2rFHar+whhRn+MFj3K3+y+/F0B4NWeRB/pdNgpZlLY04BWdkfZPlptGQkhWTyRDTcpgolr223ir+PVeflCa50rXubJaeteYkFE33qjnZ4qFKBakCXPL/oUBGmBKrLV3iTxlzzxU8NoGqEHn1qiy4lCQTMEvBgO9pZBDFqrMxzaXOkTmPDhA15EtKrxz1oxevYneL6z81YUcQYn90xHIPjjvOLJlHrpYwj4PnDoOnci7uZnmlCb4bxtxSovun+qIHoi2lhW9S4I1zJZ44uWgjIvF5BMVlMT5pwd2/VE91P9ePhFUxF4iaCeB0jjfvlt8/cRFTiTbuKo+vhGP+GeL01vf36NblQldAaRj1GTql7DWg0x12Nw4kXAhhlYgEQm0FFSzJyUeleEVoqmqCnF0+Ny0=
+  app: whether-api
+  on:
+    repo: hacknyctp/whether-app
+    branch: backend
