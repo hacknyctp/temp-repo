@@ -13,6 +13,16 @@ export default class Login extends Component {
         this.onChangeHandler = this.onChangeHandler.bind(this);
     }
 
+    //sends data to the backend for verification
+    sendData = () => {
+        /**
+         * TODO: 
+         * Send data to backend 
+         */
+
+
+    }
+
     onChangeHandler = (event, name) => {
         this.setState({ [name]: event.nativeEvent.text });
         console.log(`${name} input field is ${event.nativeEvent.text}`);
@@ -36,6 +46,7 @@ export default class Login extends Component {
 
                 <TouchableOpacity
                     style={styles.button}
+                    onPress={sendData}
                 >
                     <Text style={styles.buttonTxt}> Enter </Text>
                 </TouchableOpacity>

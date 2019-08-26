@@ -1,4 +1,5 @@
 import React from 'react';
+import AsyncStorage from '@react-native-community/async-storage';
 import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet } from 'react-native';
 
 class RainPreference extends React.Component {
@@ -9,8 +10,18 @@ class RainPreference extends React.Component {
         }
     }
 
-    // This helper function sends the preferences to the database for safe keeping 
-    sendData = () => {
+    //function to save to aysncStorage
+    storeData = async () => {
+        await AsyncStorage.setItem('rainPercentage', rainPercentage);
+
+        /**
+         * TODO:
+         * Here make a logic after the value has been saved
+         * Navigate to the next page
+         */
+
+
+
 
     }
 
@@ -41,14 +52,12 @@ class RainPreference extends React.Component {
                 </View>
 
                 {/* Using tochableOpacity rather than button for more styling freedom */}
-                <View style={styles.btnView}>
-                    <TouchableOpacity
-                        onPress={this.sendData}
-                        style={styles.btnNext}
-                    >
-                        <Text style={{ color: "white" }}> Next </Text>
-                    </TouchableOpacity>
-                </View>
+                <TouchableOpacity
+                    onPress={this.storeData}
+                    style={styles.btnNext}
+                >
+                    <Text style={{ color: "white" }}> Next </Text>
+                </TouchableOpacity>
             </View>
         )
     }
@@ -57,7 +66,8 @@ class RainPreference extends React.Component {
 const styles = StyleSheet.create({
     container: {
         width: "100%",
-        marginTop: "15%"
+        marginTop: "15%",
+        alignItems: "center",
     },
     image: {
         width: 100,

@@ -30,8 +30,14 @@ import HumidityPreference from "./pages/HumidityPreference";
 import Login from './pages/Login.js'
 
 const App = () => {
+  /**
+   * TODO:
+   * Start the react nativation here
+   */
+
   return (
     <View style={styles.body}>
+
       <Schedule />
       {/* <Login /> */}
     </View>

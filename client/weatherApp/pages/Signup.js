@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import AsyncStorage from '@react-native-community/async-storage';
 import { Text, View, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 
 export default class SignUp extends Component {
@@ -11,6 +12,42 @@ export default class SignUp extends Component {
             retypePassword: ""
         }
         this.onChangeHandler = this.onChangeHandler.bind(this);
+    }
+
+    //This helper function gathers all the data in asyncstorage and calls the backed to save user11.50 + 
+    sendData = async () => {
+        const { username, email, password, retypePassword } = this.state;
+        let sentData = [];
+        try {
+            await AsyncStorage.multiSet([['username', username], ['email', email], ['password', password], ['retypePassword', retypePassword]]);
+            sentData = await AsyncStorage.multiGet(['username',
+                'email',
+                'passowrd',
+                'Monday',
+                'Tuesday',
+                'Wenensday',
+                'Thursday',
+                'Friday',
+                'Saturday',
+                'Sunday',
+                'rainPercentage',
+                'humidityPercentage'
+            ])
+        } catch (error) {
+            console.log(`There was an error => ${error}`)
+        }
+
+        /**
+         * TODO:
+         * send 'sentData' to the backend
+         * the format of the data is going to be a nested array
+         * InnerArray[0] is the key
+         * InnerArrar[1] is the value
+         */
+
+
+
+
     }
 
     onChangeHandler = (event, name) => {
@@ -37,7 +74,7 @@ export default class SignUp extends Component {
 
                 <TouchableOpacity
                     style={styles.button}
-                //onPress={this.onPress}
+                    onPress={sendData}
                 >
                     <Text> Enter </Text>
                 </TouchableOpacity>

@@ -1,4 +1,5 @@
 import React from 'react';
+import AsyncStorage from '@react-native-community/async-storage';
 import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet } from 'react-native';
 
 class HumidityPreference extends React.Component {
@@ -9,8 +10,17 @@ class HumidityPreference extends React.Component {
         }
     }
 
-    // This helper function sends the preferences to the database for safe keeping 
-    sendData = () => {
+    storeData = async () => {
+        await AsyncStorage.setItem('humidityPercentage', humidityPercentage);
+
+        /**
+         * TODO:
+         * Here make a logic after the value has been saved
+         * Navigate to the next page
+         */
+
+
+
 
     }
 
@@ -43,7 +53,7 @@ class HumidityPreference extends React.Component {
                 {/* Using tochableOpacity rather than button for more styling freedom */}
                 <View style={styles.btnView}>
                     <TouchableOpacity
-                        onPress={this.sendData}
+                        onPress={this.storeData}
                         style={styles.btnNext}
                     >
                         <Text style={{ color: "white", fontSize: 20 }}> Finish Signing Up </Text>

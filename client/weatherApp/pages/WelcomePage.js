@@ -2,26 +2,41 @@ import React, { Component } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 
 export default class WelcomePage extends Component {
+
+    /**
+     * TODO:
+     * This function should use react navigation to go to the loginPage
+     */
+    goToLogin = () => {
+
+    }
+
+    /**
+     * TODO:
+     * This funciton should procced the user to the next step in signing up
+     */
+    goToNextStep = () => {
+
+    }
+
     render() {
         return (
             <View style={styles.viewMainStyle}>
-
                 <Image style={styles.imageArr} source={require('./assets/iconfinder_Snow_Occasional_47313.png')} />
-
-
-                <Text style={styles.paragraph}>
-                    Wounldn't you like to have a personalized weather app to send you weather app to send you weather updates based off time, rain percentage, or humuduty level?
-      </Text>
+                <Text style={styles.paragraph}>Wounldn't you like to have a personalized weather app to send you weather app to send you weather updates based off time, rain percentage, or humuduty level?</Text>
 
                 <TouchableOpacity
                     style={styles.button}
+                    onPress={goToNextStep}
                 >
-                    <Text style={styles.buttonTxt}> Find out </Text>
+                    <Text style={styles.buttonTxt}> Yes I Do </Text>
                 </TouchableOpacity>
 
-                <Text style={styles.text1}>
-                    Login
-      </Text>
+                <TouchableOpacity
+                    onPress={goToLogin}
+                >
+                    <Text style={styles.text1}>Login</Text>
+                </TouchableOpacity>
 
             </View>
         );
