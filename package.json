@@ -4,7 +4,8 @@
   "description": "The weather app that tells you whether or not to bring an umbrella",
   "main": "index.js",
   "scripts": {
-    "dtest": "nodemon index"
+    "dtest": "nodemon index",
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
