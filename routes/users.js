@@ -256,13 +256,13 @@ router.get("/5day-weather", auth, async (req, res) => {
     let data = await weather.json();
     data = data.list[0];
     await console.log(data);
-    const weatherDesc = data.weather[0].description;
-    const weatherIcon = data.weather[0].icon;
-    const temp = data.main.temp;
-    const humidity = data.main.humidity;
-    const tempMin = data.main.temp_min;
-    const tempMax = data.main.temp_max;
-    const main = data.main;
+    const weatherDesc = data.weather[0].description,
+      weatherIcon = data.weather[0].icon,
+      temp = data.main.temp,
+      humidity = data.main.humidity,
+      tempMin = data.main.temp_min,
+      tempMax = data.main.temp_max,
+      main = data.main;
     const payload = {
       weatherDesc,
       temp,
