@@ -105,7 +105,7 @@ router.post(
 
 //Sign in Authentication
 router.post(
-  "/signin",
+  "/login",
   [
     check("email", "Please include a valid email"), //Check we got an email
     check("password", "Password is required").exists() //Check we have a pw
