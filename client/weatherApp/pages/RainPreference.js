@@ -64,12 +64,15 @@ class RainPreference extends React.Component {
 const styles = StyleSheet.create({
     container: {
         width: "100%",
-        marginTop: "15%",
+        // marginTop: "15%",
         alignItems: "center",
+        backgroundColor: '#01404D',
+        height: "100%"
     },
     image: {
         width: 100,
-        height: 100
+        height: 100,
+        marginTop: "30%",
     },
     rainText: {
         color: "white",
@@ -104,7 +107,6 @@ const styles = StyleSheet.create({
         justifyContent: "center"
     },
     btnNext: {
-        flex: 1,
         backgroundColor: "green",
         width: "30%",
         padding: 20,

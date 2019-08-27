@@ -1,8 +1,9 @@
 import React from 'react';
-import { Text, View, TextInput, Button, Picker, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, View, TextInput, Picker, TouchableOpacity, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
 class Schedule extends React.Component {
+
     constructor() {
         super();
         this.state = {
@@ -24,14 +25,12 @@ class Schedule extends React.Component {
      * The text comes from the daysOfTheWeek array that corresponds to each state
      * Text is the state being change. time is the actual value
      */
-
     inputText = (time, text) => {
         this.setState({ [text]: time });
     }
 
     //function to save to aysncStorage
     storeData = async () => {
-        if (this.state.pressed) this.getData();
 
         // destructing the state object
         const { M, Tu, W, Th, F, Sa, Su } = this.state;
@@ -54,6 +53,7 @@ class Schedule extends React.Component {
          * TODO:
          * Under this line we need to a call to the weather api 
          * map the data into state.data
+         * getData() function
          */
 
 
@@ -135,14 +135,12 @@ class Schedule extends React.Component {
                 </View>
                 {/* if the data is sent the button will disapear  */}
                 {this.state.sent ? null :
-                    // <View style={{ flex: 1, width: "100%", alignItems: "center" }}>
                     <TouchableOpacity
                         onPress={this.storeData}
                         style={styles.btnNext}
                     >
                         <Text style={{ color: "white" }}> Next </Text>
                     </TouchableOpacity>
-                    // </View>
                 }
             </View>
         )
@@ -151,10 +149,11 @@ class Schedule extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        maxHeight: "100%",
         width: "100%",
         overflow: "scroll",
-        alignItems: "center"
+        alignItems: "center",
+        height: "100%",
+        backgroundColor: '#01404D',
     },
     headerText: {
         color: "white",
@@ -168,8 +167,7 @@ const styles = StyleSheet.create({
         fontSize: 30,
     },
     btnNext: {
-        flex: 1,
-        backgroundColor: "green",
+        backgroundColor: "#0D7100",
         width: "30%",
         padding: 20,
         alignItems: "center",

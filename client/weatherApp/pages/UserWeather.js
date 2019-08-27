@@ -1,20 +1,19 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { Text, View, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image, Button, } from 'react-native';
-import { AsyncAction } from 'rxjs/internal/scheduler/AsyncAction';
 
-export default class page3 extends Component {
+class UserWeather extends React.Component {
 
     constructor() {
         super();
         this.state = {
-            imgOpacity: 0,
-            countty: "",
+            country: "",
             city: "",
             zip: "",
-            dataSent: false,
+            weather: "",
             data: {},
-            weather: ""
+            dataSent: false,
+
         }
         this.changeTexthandler = this.changeTexthandler.bind(this);
         this.storeData = this.storeData.bind(this);
@@ -25,41 +24,45 @@ export default class page3 extends Component {
         this.setState({ [state]: event.text });
     }
 
-    // storeData = () => {
-    //     console.log("her her")
-    // }
+    //fetches the weaher data
+    callForWeather = () => {
+        // fetch("url", {
+        //     method: "POST",
+        //     body: {
+        //         zipCode: this.state.zip
+        //     }
+        // }).then(result => {
+        //     //depending of weather the state will determine the correct image to use
+        //     switch (result.data.main) {
+        //         case "Rain": this.setState({ weather: "rain" })
+        //             break;
+        //         case "Cloudy": this.setState({ weather: "Cloudy" })
+        //             break;
+        //     }
+        //     //saving the result to the state
+        //     this.setState({ data: result });
+
+        // }).catch(error => console.log("something went wrong"))
+    }
+
     //this helper stores the users location and moves on to the next step
     storeData = async () => {
-        try {
-            const { country, city, zip } = this.state;
-            await AsyncStorage.multiSet([['Country', country], ['City', city], ['Zip', zip]]);
-            const data = await AsyncStorage.multiGet(['Country, City, Zip']);
 
-            if (data != null) {
+        const { country, city, zip } = this.state;
+
+        try {
+            await AsyncStorage.multiSet([['Country', country], ['City', city], ['Zip', zip]]);
+            const data = await AsyncStorage.multiGet(['Country', 'City', 'Zip']);
+            if (data) {
                 /**
-                 *  TODO: need to implement the api
+                 *  TODO: 
+                 *  Need to implement the api
                  *  Once the data is saved send the data to the weather api 
                  *  The data returned is going to show at the bottom where the button ois
                  */
 
-                // fetch("url", {
-                //     method: "POST",
-                //     body: {
-                //         zipCode: this.state.zip
-                //     }
-                // }).then(result => {
-                //     //depending of weather the state will determine the correct image to use
-                //     switch (result.data.main) {
-                //         case "Rain": this.setState({ weather: "rain" })
-                //             break;
-                //         case "Cloudt": this.setState({ weather: "Cloudy" })
-                //             break;
-                //     }
-                //     //saving the result to the state
-                //     this.setState({ data: result });
 
-                // }).catch(error => console.log("something went wrong"))
-
+                this.callForWeather()
 
                 // This will render the component and change the button to the current weather
                 this.setState({ dataSent: true });
@@ -71,13 +74,13 @@ export default class page3 extends Component {
                  *  send the user to the next step
                  */
 
-                console.log("hit the button");
+                console.log("inside condition");
                 //once data is sent after 3 seconds the screen will change
-                // if (dataSent) {
-                setTimeout(() => {
-                    this.props.navigation.navigate('RainPreference')
-                }, 300);
-                // }
+                if (this.state.dataSent) {
+                    setTimeout(() => {
+                        this.props.navigation.navigate('RainPreference')
+                    }, 3000);
+                }
 
 
             } else {
@@ -92,38 +95,32 @@ export default class page3 extends Component {
     }
 
     render() {
-
         return (
             <View style={styles.viewMainStyle}>
 
-
-                <Text style={styles.text1}>
-                    My Location
-          </Text>
+                <Text style={styles.text1}>My Location</Text>
 
                 <TextInput onChange={(e) => this.changeTexthandler(e, 'country')} placeholder={'Country'} style={styles.TextInput1} />
                 <TextInput onChange={(e) => this.changeTexthandler(e, 'city')} placeholder={'City'} style={styles.TextInput1} />
                 <TextInput onChange={(e) => this.changeTexthandler(e, 'zip')} placeholder={'Zipcode'} style={styles.TextInput1} />
+
+                {/* if true show image with weather else show prompt on button */}
                 {this.state.dataSent ?
                     <TouchableOpacity
-                        style={styles.button}
                         onPress={this.storeData}
+                        style={styles.button}
                     >
-                        {/* an image should show here on the current weather */}
+
                     </TouchableOpacity> :
 
                     <TouchableOpacity
-                        style={styles.button}
                         onPress={this.storeData}
+                        style={styles.button}
                     >
-                        <Text style={styles.buttonTxt}>Press for the weather in your area </Text>
+                        <Text style={styles.buttonTxt}>Press here for the weather in your area </Text>
                     </TouchableOpacity>
 
                 }
-                <Button onPress={this.storeData} title="text"> </Button>
-
-
-
             </View>
         );
     }
@@ -131,6 +128,13 @@ export default class page3 extends Component {
 
 const styles = StyleSheet.create({
 
+    viewMainStyle: {
+        height: "100%",
+        width: "100%",
+        overflow: "scroll",
+        alignItems: "center",
+        backgroundColor: '#01404D',
+    },
     TextInput1: {
         color: '#ffffff',
         fontSize: 30,
@@ -150,28 +154,20 @@ const styles = StyleSheet.create({
         margin: 20
     },
     button: {
-        //buttton -->cant change text color, or maniupulate size 
         backgroundColor: '#0D7100',
-        padding: 10,
-        marginTop: 15,
-        width: 200,
-        height: 150,
-        fontSize: 50,
-        borderRadius: 20,
-        alignContent: 'center',
+        width: "50%",
+        padding: 30,
+        alignItems: 'center',
         justifyContent: "center",
-    },
-    viewMainStyle: {
-        flex: 1,
-        alignItems: "center",
-        backgroundColor: '#01404D'
+        borderRadius: 20,
+        marginTop: 40,
     },
     buttonTxt: {
         fontSize: 20,
         color: '#ffffff',
-        fontWeight: 'bold',
         textAlign: "center",
         lineHeight: 30,
+        textTransform: "uppercase"
     },
     imageArr: {
         width: 150,
@@ -180,4 +176,6 @@ const styles = StyleSheet.create({
         borderBottomStartRadius: 5
     }
 });
+
+export default UserWeather;
 
