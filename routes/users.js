@@ -7,8 +7,6 @@ const jwt = require("jsonwebtoken");
 const config = require("config");
 const auth = require("../middleware/requireAuth");
 const fetch = require("node-fetch");
-const express = require("express");
-const bcrypt = require("bcrypt");
 
 //Registering user --> Use a put req ---> CREAT (C)RUD
 // @ route      POST api/users
