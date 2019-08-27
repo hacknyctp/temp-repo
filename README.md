@@ -1,3 +1,4 @@
+
 # Introduction
 Back end API for Wheather Mobile App
 
@@ -13,3 +14,11 @@ Back end API for Wheather Mobile App
 	- Signing in returns the JWT that should be stored locally to authenticate a user.
 	- When loggin in, the given password is hashed and checked against the encrypted stored 
 - Passwords are encrypted via bcrypt :)
+
+# The weather app that tells you whether or not to bring an umbrella
+## Branches/Workflow
+-  App will be continuously deployed on the `master` branch
+  - Back end development on the `backend` branch
+  - Front end development on the `frontend` branch
+  - Testing back end and front end integration on `main` branch
+
