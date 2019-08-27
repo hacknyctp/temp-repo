@@ -1,6 +1,4 @@
 const express = require("express");
-const router = express.Router(); //Get express' router
-const User = require("../models/User");
 const { check, validationResult } = require("express-validator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -8,6 +6,11 @@ const config = require("config");
 const zipcodes = require("zipcodes");
 const auth = require("../middleware/requireAuth");
 const fetch = require("node-fetch");
+const router = express.Router();
+const User = require("../models/User");
+
+//Grab env vars
+const API_KEY = process.env.OWM || config.get("DARK");
 
 //Registering user --> Use a put req ---> CREAT (C)RUD
 // @ route      POST api/users
@@ -17,7 +20,7 @@ const fetch = require("node-fetch");
 router.post(
   "/signup",
   [
-    check("username", "Please add a name")
+    check("username", "Please add a username")
       .not()
       .isEmpty(),
     check("email", "Please include a valid email ").isEmail(),
@@ -54,7 +57,7 @@ router.post(
       Sa,
       Su
     } = req.body;
-    console.log(req.body);
+
     //Check to see if there is a user with that email
     try {
       let user = await User.findOne({
@@ -65,12 +68,14 @@ router.post(
           msg: "User email already in use!"
         });
       }
+
       //If the email is not already in use..
       user = new User({
         username: username,
         email: email,
         password: password
       });
+
       //Use bcrypt for password encryption, returns a promise
       const salt = await bcrypt.genSalt(10); //The salt is needed for encryption, higher #rounds=more secure
       user.password = await bcrypt.hash(password, salt); //Gives us a hashed version of the password
@@ -82,6 +87,7 @@ router.post(
           id: user.id
         }
       };
+
       //jwt takes: Sign, payload, options, and a call back
       //When it expires they'll have to log back in
       jwt.sign(
@@ -104,7 +110,7 @@ router.post(
   }
 ); //Note that "/" here refers to the prefix of "api/users" + "/"
 
-//Sign in Authentication
+//SIGN IN ENDPOINT
 router.post(
   "/login",
   [
@@ -135,7 +141,6 @@ router.post(
           msg: "Email not registered!"
         });
       }
-      console.log(user);
 
       //If the email exits, let's check the password via a bcrypt.compare hashing
       const isMatch = await bcrypt.compare(password, user.password);
@@ -151,6 +156,7 @@ router.post(
           id: user.id
         }
       };
+
       //jwt takes: Sign, payload, options, and a call back
       //When it expires they'll have to log back in
       jwt.sign(
@@ -211,34 +217,25 @@ router.post("/update", auth, async (req, res) => {
   //Return the updated user here.
 }); //Note that "/" here refers to the prefix of "api/users" + "/"
 
-//Get users' weather
+//GET USER'S CURRENT WEATHER
 router.get("/weather", auth, async (req, res) => {
   try {
     // Grab the user
     const user = await User.findById(req.id).select("-password"); //
-    console.log(user);
     const zip = user.zipCode;
-    console.log(zip);
-    const API_KEY = process.env.OWM || config.get("DARK");
-
-    console.log(zipcodes.lookup(zip));
     const { latitude, longitude } = zipcodes.lookup(zip);
-    // console.log("LAt:" + lat + "LONG" + long);
     const weather = await fetch(
       `https://api.darksky.net/forecast/${API_KEY}/${latitude},${longitude}`
     );
     let data = await weather.json();
-    // // data = data.list[0];
-    await console.log(data);
+
     const weatherDesc = data.currently.summary,
       weatherIcon = data.currently.icon,
       temp = data.currently.temperature,
       minutelySummarry = data.currently.summary,
       minutelyRainPrecip = data.currently.precipProbability * 100,
       humidity = data.currently.humidity * 100;
-    // tempMin = data.main.temp_min,
-    // tempMax = data.main.temp_max,
-    // main = data.main;
+
     const payload = {
       weatherDesc,
       temp,
@@ -254,40 +251,28 @@ router.get("/weather", auth, async (req, res) => {
   }
 }); //Note that "/" here refers to the prefix of "api/users" + "/"
 
-//Get users' 5 day weather
-router.get("/5weather", auth, async (req, res) => {
+//GET User's 5 day weather
+router.get("/5day", auth, async (req, res) => {
   try {
     // Grab the user
     const user = await User.findById(req.id).select("-password"); //
-    // console.log(user);
     const zip = user.zipCode;
-    // console.log(zip);
-    const API_KEY = process.env.OWM || config.get("DARK");
 
-    // console.log(zipcodes.lookup(zip));
+    //Convert Zip Code into lat and long
     const { latitude, longitude } = zipcodes.lookup(zip);
-    // console.log("LAt:" + lat + "LONG" + long);
+
     const weather = await fetch(
       `https://api.darksky.net/forecast/${API_KEY}/${latitude},${longitude}`
     );
     let data = await weather.json();
-    // // data = data.list[0];
-    // await console.log(data);
+
     let weekData = data.daily.data;
-
-    const weatherDesc = data.daily.summary;
-
-    // temp = data.currently.temperature,
-    // minutelyRainPrecip = data.currently.precipProbability * 100,
-    // humidity = data.currently.humidity * 100;
-    console.log(weekData[0]);
-    // for (var day of weekData) {
-    //   console.log(day.summary);
-    // }
+    let weatherDesc = data.daily.summary;
     let days = [];
+
+    //For every day in our week:
     weekData.forEach(day => {
-      console.log(day);
-      // const date = new Date();
+      //Reassign the day to what we want.
       day = {
         time: new Date(day.time * 1000),
         summary: day.summary,
@@ -300,12 +285,13 @@ router.get("/5weather", auth, async (req, res) => {
       console.log(day);
       days.push(day);
     });
-    console.log(days);
 
+    //Build the payload
     const payload = {
       weatherDesc,
       days
     };
+
     res.json(payload);
   } catch (err) {
     console.error(err.message);
