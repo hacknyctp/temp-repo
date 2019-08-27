@@ -10,18 +10,22 @@ class HumidityPreference extends React.Component {
         }
     }
 
+
+    //function to save to aysncStorage and move to the next page
     storeData = async () => {
-        await AsyncStorage.setItem('humidityPercentage', humidityPercentage);
 
-        /**
-         * TODO:
-         * Here make a logic after the value has been saved
-         * Navigate to the next page
-         */
+        try {
+            await AsyncStorage.setItem('humidityPercentage', this.state.humidityPercentage);
+            const value = await AsyncStorage.getItem('humidityPercentage');
 
+            //if the value has been saved then it moves to the next page
+            if (value != null) {
+                this.props.navigation.navigate("SignUp");
+            }
 
-
-
+        } catch (error) {
+            console.log(`There was an error: ${error}`)
+        }
     }
 
     render() {
@@ -67,11 +71,14 @@ class HumidityPreference extends React.Component {
 const styles = StyleSheet.create({
     container: {
         width: "100%",
-        marginTop: "15%"
+        alignItems: "center",
+        backgroundColor: '#01404D',
+        height: "100%"
     },
     image: {
         width: 100,
-        height: 100
+        height: 100,
+        marginTop: "30%",
     },
     tempText: {
         color: "white",

@@ -28,7 +28,7 @@ const AppNavigator = createStackNavigator({
   HumidityPreference: HumidityPreference,
 
 }, {
-    initialRouteName: "RainPreference",
+    initialRouteName: "Home",
     headerMode: 'none',
     navigationOptions: {
       headerVisible: false,

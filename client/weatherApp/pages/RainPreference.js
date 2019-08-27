@@ -10,17 +10,20 @@ class RainPreference extends React.Component {
         }
     }
 
-    //function to save to aysncStorage
+    //function to save to aysncStorage and move to the next page
     storeData = async () => {
-        await AsyncStorage.setItem('rainPercentage', rainPercentage);
+        try {
+            await AsyncStorage.setItem('rainPercentage', this.state.rainPercentage);
+            const value = await AsyncStorage.getItem('rainPercentage');
 
-        /**
-         * TODO:
-         * Here make a logic after the value has been saved
-         * Navigate to the next page
-         */
+            //if the value has been saved then it moves to the next page
+            if (value != null) {
+                this.props.navigation.navigate("HumidityPreference");
+            }
 
-
+        } catch (error) {
+            console.log(`There was an error: ${error}`)
+        }
     }
 
     render() {
@@ -64,7 +67,6 @@ class RainPreference extends React.Component {
 const styles = StyleSheet.create({
     container: {
         width: "100%",
-        // marginTop: "15%",
         alignItems: "center",
         backgroundColor: '#01404D',
         height: "100%"

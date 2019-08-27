@@ -61,20 +61,17 @@ class UserWeather extends React.Component {
                  *  The data returned is going to show at the bottom where the button ois
                  */
 
-
                 this.callForWeather()
 
                 // This will render the component and change the button to the current weather
                 this.setState({ dataSent: true });
 
 
-                /**
-                 *  TODO:
+                /** 
                  *  Once the button shows the current weather after 3 secs 
                  *  send the user to the next step
                  */
 
-                console.log("inside condition");
                 //once data is sent after 3 seconds the screen will change
                 if (this.state.dataSent) {
                     setTimeout(() => {
@@ -105,13 +102,15 @@ class UserWeather extends React.Component {
                 <TextInput onChange={(e) => this.changeTexthandler(e, 'zip')} placeholder={'Zipcode'} style={styles.TextInput1} />
 
                 {/* if true show image with weather else show prompt on button */}
+                {/* want to change the style in which the temp and humidity shows */}
                 {this.state.dataSent ?
-                    <TouchableOpacity
-                        onPress={this.storeData}
-                        style={styles.button}
-                    >
-
-                    </TouchableOpacity> :
+                    <View style={styles.weatherView}>
+                        <Text style={{ textAlign: "center", fontSize: 25, marginBottom: "10%" }}>Weather Type</Text>
+                        <View styles={styles.weatherPercentages}>
+                            <Text style={{ textAlign: "center", fontSize: 18 }}>H: 40</Text>
+                            <Text style={{ textAlign: "center", fontSize: 18 }}>T: 40</Text>
+                        </View>
+                    </View> :
 
                     <TouchableOpacity
                         onPress={this.storeData}
@@ -174,6 +173,21 @@ const styles = StyleSheet.create({
         height: 150,
         alignItems: "center",
         borderBottomStartRadius: 5
+    },
+    weatherView: {
+        backgroundColor: "#FFF",
+        width: "50%",
+        padding: 30,
+        alignItems: 'center',
+        justifyContent: "center",
+        borderRadius: 20,
+        marginTop: 40,
+    },
+    weatherPercentages: {
+        flex: 1,
+        marginTop: "30%",
+        width: "100%",
+        lineHeight: 25,
     }
 });
 

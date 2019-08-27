@@ -32,10 +32,12 @@ const styles = StyleSheet.create({
     //PARAGRAPH
     paragraph: {
         margin: 24,
-        fontSize: 18,
+        padding: 15,
+        fontSize: 20,
         fontWeight: 'bold',
         textAlign: 'center',
-        color: '#ffffff'
+        color: '#ffffff',
+        lineHeight: 33,
     },
     //BUTTON
     button: {
@@ -69,7 +71,6 @@ const styles = StyleSheet.create({
     buttonTxt: { //TEXT FOR THE BUTTON
         fontSize: 30,
         color: '#ffffff',
-        fontWeight: 'bold'
     }
 });
 

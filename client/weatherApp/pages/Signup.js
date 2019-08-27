@@ -15,7 +15,7 @@ export default class SignUp extends Component {
     }
 
     //This helper function gathers all the data in asyncstorage and calls the backed to save user11.50 + 
-    sendData = async () => {
+    storeData = async () => {
         const { username, email, password, retypePassword } = this.state;
         let sentData = [];
         try {
@@ -72,19 +72,19 @@ export default class SignUp extends Component {
 
                 <Text style={styles.text3}>SignUp</Text>
 
-                <TextInput value={this.state.username} onChange={(e) => { onChangeHandler(e, "username") }} placeholder={'Username'} style={styles.input} />
+                <TextInput value={this.state.username} onChange={(e) => { this.onChangeHandler(e, "username") }} placeholder={'Username'} style={styles.input} />
 
-                <TextInput value={this.state.email} onChange={(e) => { onChangeHandler(e, "email") }} placeholder={'Email'} style={styles.input} />
+                <TextInput value={this.state.email} onChange={(e) => { this.onChangeHandler(e, "email") }} placeholder={'Email'} style={styles.input} />
 
-                <TextInput value={this.state.password} onChange={(e) => { onChangeHandler(e, "password") }} placeholder={'Password'} style={styles.input} />
+                <TextInput value={this.state.password} onChange={(e) => { this.onChangeHandler(e, "password") }} placeholder={'Password'} style={styles.input} />
 
-                <TextInput value={this.state.retypePassword} onChange={(e) => { onChangeHandler(e, "retypePassword") }} placeholder={'Retype-Password'} style={styles.input} />
+                <TextInput value={this.state.retypePassword} onChange={(e) => { this.onChangeHandler(e, "retypePassword") }} placeholder={'Retype-Password'} style={styles.input} />
 
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={sendData}
+                    onPress={this.storeData}
                 >
-                    <Text> Enter </Text>
+                    <Text style={{ color: "white", fontSize: 20 }}> Enter </Text>
                 </TouchableOpacity>
 
 
@@ -97,7 +97,7 @@ export default class SignUp extends Component {
 const styles = StyleSheet.create({
     //text inputs   
     input: {
-        width: 200,
+        width: "75%",
         height: 44,
         padding: 10,
         color: '#CB812B',
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
         fontSize: 25,
         color: '#ffffff',
         alignItems: "center",
-        //margin: 10
+        textAlign: "center",
         paddingTop: 30,
         paddingLeft: 15,
         paddingRight: 15
@@ -149,7 +149,8 @@ const styles = StyleSheet.create({
         alignContent: "center",
         alignItems: "center",
         backgroundColor: '#01404D',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        height: "100%",
     },
     buttonTxt: {
         color: '#ffffff',
