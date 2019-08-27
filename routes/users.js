@@ -5,6 +5,7 @@ const { check, validationResult } = require("express-validator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const config = require("config");
+const zipcodes = require("zipcodes");
 const auth = require("../middleware/requireAuth");
 const fetch = require("node-fetch");
 
@@ -249,28 +250,36 @@ router.get("/5day-weather", auth, async (req, res) => {
     console.log(user);
     const zip = user.zipCode;
     console.log(zip);
-    const API_KEY = process.env.OWM || config.get("OWM");
+    const API_KEY = process.env.OWM || config.get("DARK");
+    // const weather = await fetch(
+    //   `http://api.openweathermap.org/data/2.5/forecast?zip=${zip}&units=imperial&APPID=${API_KEY}`
+    // );
+    console.log(zipcodes.lookup(zip));
+    const { latitude, longitude } = zipcodes.lookup(zip);
+    // console.log("LAt:" + lat + "LONG" + long);
     const weather = await fetch(
-      `http://api.openweathermap.org/data/2.5/forecast?zip=${zip}&units=imperial&APPID=${API_KEY}`
+      `https://api.darksky.net/forecast/${API_KEY}/${latitude},${longitude}`
     );
     let data = await weather.json();
-    data = data.list[0];
+    // // data = data.list[0];
     await console.log(data);
-    const weatherDesc = data.weather[0].description,
-      weatherIcon = data.weather[0].icon,
-      temp = data.main.temp,
-      humidity = data.main.humidity,
-      tempMin = data.main.temp_min,
-      tempMax = data.main.temp_max,
-      main = data.main;
+    const weatherDesc = data.currently.summary,
+      weatherIcon = data.minutely.icon,
+      temp = data.currently.temperature,
+      minutelySummarry = data.minutely.summary,
+      minutelyRainPrecip =
+        parseInt(data.minutely.data[0].precipProbability) * 100,
+      humidity = data.currently.humidity;
+    // tempMin = data.main.temp_min,
+    // tempMax = data.main.temp_max,
+    // main = data.main;
     const payload = {
       weatherDesc,
       temp,
-      tempMin,
-      tempMax,
-      humidity,
-      main,
-      weatherIcon
+      weatherIcon,
+      minutelySummarry,
+      minutelyRainPrecip,
+      humidity
     };
     res.json(payload);
   } catch (err) {
