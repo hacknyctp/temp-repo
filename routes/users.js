@@ -232,16 +232,16 @@ router.get("/weather", auth, async (req, res) => {
     const weatherDesc = data.currently.summary,
       weatherIcon = data.currently.icon,
       temp = data.currently.temperature,
-      minutelySummarry = data.currently.summary,
-      minutelyRainPrecip = data.currently.precipProbability * 100,
+      minutelySummary = data.currently.summary,
+      minutelyRainPrecipitation = data.currently.precipProbability * 100,
       humidity = data.currently.humidity * 100;
 
     const payload = {
       weatherDesc,
       temp,
       weatherIcon,
-      minutelySummarry,
-      minutelyRainPrecip,
+      minutelySummary,
+      minutelyRainPrecipitation,
       humidity
     };
     res.json(payload);
