@@ -2,3 +2,5 @@ package-lock.json
 #Node
 node_modules
 /node_modules
+config/default.json
+config/production.json
