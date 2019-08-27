@@ -242,19 +242,19 @@ router.get("/weather", auth, async (req, res) => {
     );
     let data = await weather.json();
 
-    const weatherDesc = data.currently.summary,
+    const weatherDesc = await data.currently.summary,
       weatherIcon = data.currently.icon,
       temp = data.currently.temperature,
-      minutelySummary = data.currently.summary,
-      minutelyRainPrecipitation = data.currently.precipProbability * 100,
+      summary = data.currently.summary,
+      precipitation = data.currently.precipProbability * 100,
       humidity = data.currently.humidity * 100;
 
     const payload = {
       weatherDesc,
       temp,
       weatherIcon,
-      minutelySummary,
-      minutelyRainPrecipitation,
+      summary,
+      precipitation,
       humidity
     };
     res.json(payload);
@@ -290,10 +290,10 @@ router.get("/5day", auth, async (req, res) => {
         time: new Date(day.time * 1000),
         summary: day.summary,
         icon: day.icon,
-        precipitation: day.precipProbability,
+        precipitation: day.precipProbability * 100,
         high: day.temperatureHigh,
         low: day.temperatureLow,
-        humidity: day.humidity
+        humidity: day.humidity * 100
       };
       console.log(day);
       days.push(day);
