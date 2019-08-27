@@ -219,41 +219,8 @@ router.get("/weather", auth, async (req, res) => {
     console.log(user);
     const zip = user.zipCode;
     console.log(zip);
-    const API_KEY = process.env.OWM || config.get("OWM");
-    const weather = await fetch(
-      `http://api.openweathermap.org/data/2.5/weather?zip=${zip}&units=imperial&APPID=${API_KEY}`
-    );
-    const data = await weather.json();
-    await console.log(data);
-    const weatherDesc = data.weather[0].description;
-    const weatherIcon = data.weather[0].icon;
-    const currTemp = data.main.temp;
-    const currHum = data.main.humidity;
-    const payload = {
-      weatherDesc,
-      currTemp,
-      currHum,
-      weatherIcon
-    };
-    res.json(payload);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server Error");
-  }
-}); //Note that "/" here refers to the prefix of "api/users" + "/"
-
-//Get users' 5 day weather
-router.get("/5day-weather", auth, async (req, res) => {
-  try {
-    // Grab the user
-    const user = await User.findById(req.id).select("-password"); //
-    console.log(user);
-    const zip = user.zipCode;
-    console.log(zip);
     const API_KEY = process.env.OWM || config.get("DARK");
-    // const weather = await fetch(
-    //   `http://api.openweathermap.org/data/2.5/forecast?zip=${zip}&units=imperial&APPID=${API_KEY}`
-    // );
+
     console.log(zipcodes.lookup(zip));
     const { latitude, longitude } = zipcodes.lookup(zip);
     // console.log("LAt:" + lat + "LONG" + long);
@@ -264,10 +231,10 @@ router.get("/5day-weather", auth, async (req, res) => {
     // // data = data.list[0];
     await console.log(data);
     const weatherDesc = data.currently.summary,
-      weatherIcon = data.minutely.icon,
+      weatherIcon = data.currently.icon,
       temp = data.currently.temperature,
-      minutelySummarry = data.minutely.summary,
-      minutelyRainPrecip = data.minutely.data[0].precipProbability * 100,
+      minutelySummarry = data.currently.summary,
+      minutelyRainPrecip = data.currently.precipProbability * 100,
       humidity = data.currently.humidity * 100;
     // tempMin = data.main.temp_min,
     // tempMax = data.main.temp_max,
@@ -279,6 +246,65 @@ router.get("/5day-weather", auth, async (req, res) => {
       minutelySummarry,
       minutelyRainPrecip,
       humidity
+    };
+    res.json(payload);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+}); //Note that "/" here refers to the prefix of "api/users" + "/"
+
+//Get users' 5 day weather
+router.get("/5weather", auth, async (req, res) => {
+  try {
+    // Grab the user
+    const user = await User.findById(req.id).select("-password"); //
+    // console.log(user);
+    const zip = user.zipCode;
+    // console.log(zip);
+    const API_KEY = process.env.OWM || config.get("DARK");
+
+    // console.log(zipcodes.lookup(zip));
+    const { latitude, longitude } = zipcodes.lookup(zip);
+    // console.log("LAt:" + lat + "LONG" + long);
+    const weather = await fetch(
+      `https://api.darksky.net/forecast/${API_KEY}/${latitude},${longitude}`
+    );
+    let data = await weather.json();
+    // // data = data.list[0];
+    // await console.log(data);
+    let weekData = data.daily.data;
+
+    const weatherDesc = data.daily.summary;
+
+    // temp = data.currently.temperature,
+    // minutelyRainPrecip = data.currently.precipProbability * 100,
+    // humidity = data.currently.humidity * 100;
+    console.log(weekData[0]);
+    // for (var day of weekData) {
+    //   console.log(day.summary);
+    // }
+    let days = [];
+    weekData.forEach(day => {
+      console.log(day);
+      // const date = new Date();
+      day = {
+        time: new Date(day.time * 1000),
+        summary: day.summary,
+        icon: day.icon,
+        precipitation: day.precipProbability,
+        high: day.temperatureHigh,
+        low: day.temperatureLow,
+        humidity: day.humidity
+      };
+      console.log(day);
+      days.push(day);
+    });
+    console.log(days);
+
+    const payload = {
+      weatherDesc,
+      days
     };
     res.json(payload);
   } catch (err) {
