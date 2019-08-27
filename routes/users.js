@@ -290,10 +290,10 @@ router.get("/5day", auth, async (req, res) => {
         time: new Date(day.time * 1000),
         summary: day.summary,
         icon: day.icon,
-        precipitation: day.precipProbability,
+        precipitation: day.precipProbability * 100,
         high: day.temperatureHigh,
         low: day.temperatureLow,
-        humidity: day.humidity
+        humidity: day.humidity * 100
       };
       console.log(day);
       days.push(day);
