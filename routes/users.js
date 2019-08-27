@@ -267,9 +267,8 @@ router.get("/5day-weather", auth, async (req, res) => {
       weatherIcon = data.minutely.icon,
       temp = data.currently.temperature,
       minutelySummarry = data.minutely.summary,
-      minutelyRainPrecip =
-        parseInt(data.minutely.data[0].precipProbability) * 100,
-      humidity = data.currently.humidity;
+      minutelyRainPrecip = data.minutely.data[0].precipProbability * 100,
+      humidity = data.currently.humidity * 100;
     // tempMin = data.main.temp_min,
     // tempMax = data.main.temp_max,
     // main = data.main;
