@@ -12,7 +12,11 @@ app.use("/api/users", require("./routes/users"));
 app.get("/api", function(req, res) {
   res.send("Welcome to the API");
 });
-
+app.get("/", function(req, res) {
+  res.send(
+    "Go to https://documenter.getpostman.com/view/7764095/SVfNv9Uc?version=latest  to see the API use case examples "
+  );
+});
 // // Serve static assets in production
 // if (process.env.NODE_ENV === "production") {
 //   // Set static folder
