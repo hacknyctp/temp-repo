@@ -2,11 +2,12 @@ import React from 'react';
 import { View } from 'react-native';
 import Login from './pages/Login.js'
 import Signup from './pages/Signup.js'
-import Schedule from "./pages/Schedule";
-import WelcomePage from "./pages/WelcomePage";
+import Schedule from "./pages/Schedule.js";
+import Dashboard from "./pages/Dashboard.js";
+import WelcomePage from "./pages/WelcomePage.js";
 import UserWeather from './pages/UserWeather.js'
-import RainPreference from "./pages/RainPreference";
-import HumidityPreference from "./pages/HumidityPreference";
+import RainPreference from "./pages/RainPreference.js";
+import HumidityPreference from "./pages/HumidityPreference.js";
 import { createStackNavigator, createAppContainer } from "react-navigation";
 
 const App = () => {
@@ -26,9 +27,10 @@ const AppNavigator = createStackNavigator({
   Schedule: Schedule,
   RainPreference: RainPreference,
   HumidityPreference: HumidityPreference,
+  Dashboard: Dashboard,
 
 }, {
-    initialRouteName: "Home",
+    initialRouteName: "Dashboard",
     headerMode: 'none',
     navigationOptions: {
       headerVisible: false,

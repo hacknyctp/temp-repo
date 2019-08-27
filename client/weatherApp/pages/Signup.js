@@ -47,8 +47,6 @@ export default class SignUp extends Component {
          * InnerArrar[1] is the value
          */
 
-
-
         /**
          * TODO: Alex
          * call the api and check to see if it returns json token
