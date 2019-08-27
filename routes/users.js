@@ -242,19 +242,19 @@ router.get("/weather", auth, async (req, res) => {
     );
     let data = await weather.json();
 
-    const weatherDesc = data.currently.summary,
+    const weatherDesc = await data.currently.summary,
       weatherIcon = data.currently.icon,
       temp = data.currently.temperature,
-      minutelySummary = data.currently.summary,
-      minutelyRainPrecipitation = data.currently.precipProbability * 100,
+      summary = data.currently.summary,
+      precipitation = data.currently.precipProbability * 100,
       humidity = data.currently.humidity * 100;
 
     const payload = {
       weatherDesc,
       temp,
       weatherIcon,
-      minutelySummary,
-      minutelyRainPrecipitation,
+      summary,
+      precipitation,
       humidity
     };
     res.json(payload);
