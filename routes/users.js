@@ -62,18 +62,31 @@ router.post(
     try {
       let user = await User.findOne({
         email
-      }); //Go though the MongoDB and see if the email is already registered
+      });
+      //Go though the MongoDB and see if the email is already registered
       if (user) {
         return res.status(400).json({
           msg: "User email already in use!"
         });
       }
 
-      //If the email is not already in use..
+      //If the email is not already in use...
       user = new User({
-        username: username,
-        email: email,
-        password: password
+        username,
+        email,
+        password,
+        rainPercentage,
+        humidityPercentage,
+        country,
+        city,
+        zipCode,
+        M,
+        Tu,
+        W,
+        Th,
+        F,
+        Sa,
+        Su
       });
 
       //Use bcrypt for password encryption, returns a promise
