@@ -10,7 +10,7 @@ const router = express.Router();
 const User = require("../models/User");
 
 //Grab env vars
-const API_KEY = process.env.OWM || config.get("DARK");
+const API_KEY = process.env.DARK || config.get("DARK");
 
 //Registering user --> Use a put req ---> CREAT (C)RUD
 // @ route      POST api/users
