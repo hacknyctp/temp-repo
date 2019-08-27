@@ -241,7 +241,7 @@ router.get("/weather", auth, async (req, res) => {
       `https://api.darksky.net/forecast/${API_KEY}/${latitude},${longitude}`
     );
     let data = await weather.json();
-
+    console.log(data);
     const weatherDesc = await data.currently.summary,
       weatherIcon = data.currently.icon,
       temp = data.currently.temperature,
@@ -249,7 +249,7 @@ router.get("/weather", auth, async (req, res) => {
       precipitation = data.currently.precipProbability * 100,
       humidity = data.currently.humidity * 100;
 
-    const payload = {
+    const payload = await {
       weatherDesc,
       temp,
       weatherIcon,
@@ -257,7 +257,7 @@ router.get("/weather", auth, async (req, res) => {
       precipitation,
       humidity
     };
-    res.json(payload);
+    await res.json(payload);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
