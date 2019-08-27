@@ -220,12 +220,59 @@ router.get("/weather", auth, async (req, res) => {
     console.log(zip);
     const API_KEY = process.env.OWM || config.get("OWM");
     const weather = await fetch(
-      `http://api.openweathermap.org/data/2.5/weather?zip=${zip}&APPID=${API_KEY}`
+      `http://api.openweathermap.org/data/2.5/weather?zip=${zip}&units=imperial&APPID=${API_KEY}`
     );
     const data = await weather.json();
     await console.log(data);
     const weatherDesc = data.weather[0].description;
-    res.json(weatherDesc);
+    const weatherIcon = data.weather[0].icon;
+    const currTemp = data.main.temp;
+    const currHum = data.main.humidity;
+    const payload = {
+      weatherDesc,
+      currTemp,
+      currHum,
+      weatherIcon
+    };
+    res.json(payload);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+}); //Note that "/" here refers to the prefix of "api/users" + "/"
+
+//Get users' 5 day weather
+router.get("/5day-weather", auth, async (req, res) => {
+  try {
+    // Grab the user
+    const user = await User.findById(req.id).select("-password"); //
+    console.log(user);
+    const zip = user.zipCode;
+    console.log(zip);
+    const API_KEY = process.env.OWM || config.get("OWM");
+    const weather = await fetch(
+      `http://api.openweathermap.org/data/2.5/forecast?zip=${zip}&units=imperial&APPID=${API_KEY}`
+    );
+    let data = await weather.json();
+    data = data.list[0];
+    await console.log(data);
+    const weatherDesc = data.weather[0].description;
+    const weatherIcon = data.weather[0].icon;
+    const temp = data.main.temp;
+    const humidity = data.main.humidity;
+    const tempMin = data.main.temp_min;
+    const tempMax = data.main.temp_max;
+    const main = data.main;
+    const payload = {
+      weatherDesc,
+      temp,
+      tempMin,
+      tempMax,
+      humidity,
+      main,
+      weatherIcon
+    };
+    res.json(payload);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
