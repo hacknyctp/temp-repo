@@ -9,7 +9,7 @@ export default class SignUp extends Component {
             username: "",
             email: "",
             password: "",
-            retypePassword: ""
+            retypePassword: "",
         }
         this.onChangeHandler = this.onChangeHandler.bind(this);
     }
@@ -17,7 +17,7 @@ export default class SignUp extends Component {
     //This helper function gathers all the data in asyncstorage and calls the backed to save user11.50 + 
     storeData = async () => {
         const { username, email, password, retypePassword } = this.state;
-        let sentData = [];
+        let sentData = []; //used to store asycn storage
         try {
             await AsyncStorage.multiSet([['username', username], ['email', email], ['password', password], ['retypePassword', retypePassword]]);
             sentData = await AsyncStorage.multiGet(['username',
@@ -33,27 +33,63 @@ export default class SignUp extends Component {
                 'rainPercentage',
                 'humidityPercentage'
             ])
-
-
         } catch (error) {
             console.log(`There was an error => ${error}`)
         }
 
-        /**
-         * TODO: Alex
-         * map sendData to an object called body = {}
-         * the format of the data is going to be a nested array
-         * InnerArray[0] is the key
-         * InnerArrar[1] is the value
-         */
 
-        /**
-         * TODO: Alex
-         * call the api and check to see if it returns json token
-         * and save the json token in the async storage
-         */
 
-        //await AsyncStorage.setItem("jwt", "returned value");
+        this.mapToObject(sentData)
+
+
+
+    }
+
+    /**
+     * maping sendData to an object called body = {}
+     * the format of the data is going to be a nested array
+     * InnerArray[0] is the key
+     * InnerArrar[1] is the value
+    */
+    mapToObject = async () => {
+        const body = {};
+        data.map(index => {
+            body[index[0]] = index[1]
+        })
+
+        this.signUpUser(body)
+    }
+
+    /**
+     * TODO: fix erros
+     * call the api and check to see if it returns json token
+     * and save the json token in the async storage
+     * once saved move on to the dashboard
+     * this.props.navigation.navigate("Dashboard")
+     */
+    signUpUser = (body) => {
+        fetch("https://whether-api.herokuapp.com/api/users/signup", {
+            method: "POST",
+            body: JSON.stringify(body),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(result => result.json())
+            .then(result => {
+                if (result.status != 200) alert(console.log("error"))
+                else this.saveTokenAndDash(/**This is where the token is sent*/)
+            })
+    }
+
+
+    saveTokenAndDash = async () => {
+        try {
+            await AsyncStorage.setItem('jwt', "token");
+            this.props.naviagtion.navigate("Dashboard");
+        } catch (error) {
+            console.log("There was an error saveTokenAndDash")
+        }
+
     }
 
     onChangeHandler = (event, name) => {

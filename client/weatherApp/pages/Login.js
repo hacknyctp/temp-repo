@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Text, View, TextInput, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import AsyncStorage from "@react-native-community/async-storage"
 
 
 export default class Login extends Component {
@@ -8,19 +9,37 @@ export default class Login extends Component {
         super();
         this.state = {
             email: "",
-            passoword: "",
+            password: "",
+            token: "",
         }
         this.onChangeHandler = this.onChangeHandler.bind(this);
     }
 
     //sends data to the backend for verification
-    sendData = () => {
-        /**
-         * TODO: 
-         * Send data to backend 
-         */
+    sendData = async () => {
+        fetch('https://whether-api.herokuapp.com/api/users/login', {
+            method: "POST",
+            body: {
+                "email": this.state.email,
+                "password": this.state.password
+            },
+            headers: {
+                "Content-Type": "application/json"
+            },
+        }).then(result => result.json())
+            .then(result => {
+                if (result.status != 200) alert(result.errors[0].msg);
+                else {
+                    this.successLogin(result.token);
+                }
+            })
+            .catch(error => console.log(`There was an error ${error}`))
+    }
 
-
+    //when the user login is successful, it saves the token and move to dashboard
+    successLogin = async (token) => {
+        await AsyncStorage.setItem('jwt', token);
+        this.props.navigation.navigate("Dashboard");
     }
 
     onChangeHandler = (event, name) => {

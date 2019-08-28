@@ -1,5 +1,7 @@
 import React from 'react';
 import { Text, View, StyleSheet, Image } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
+
 
 
 
@@ -9,52 +11,72 @@ class Dashboard extends React.Component {
         super();
         this.state = {
             date: "Jun 12, 2019",
-            time: "",
-            timeOfDay: "Good Morning",
-            username: "John",
-            data: {},
-            weekForcast: ["cloudy"]
+            temp: "",
+            humidity: "",
+            weatherDescription: "", //this is going to hold the current forcast
+            weatherImage: "Cloudy-white.png",
         }
     }
 
-    componentWillMount() {
-        /**
-         * TODO:
-         * In here we will call the api to set up the data
-         * We will configure the time (Good morning, good afternoon, etc)
-         * Need to map through days[Array of objects] and get the the days[i].icon to determine image
-         */
+    // componentWillMount() {
+    //     //the method will get the needed data for the weather on the dashboard and set states
+    //     this.getWeatherData();
+    //     //gets current date
+    //     this.setState({ date: Date.now() })
+    //     //depending on the weather we need to determine a image that corresponds
+    //     const { weatherDescription } = this.state;
+    //     if (weatherDescription.includes("cloudy")) {
+    //         this.setState({ weatherImage: "Cloudy-white.png" })
+    //     } else if (weatherDescription.includes('rain')) {
+    //         this.setState({ weatherImage: "Rain-white.png" })
+    //     } else if (weatherDescription.includes('sun') || weatherDescription.includes("sunny")) {
+    //         this.setState({ weatherImage: "Sun-white.png" })
+    //     } else if (weatherDescription.includes('snow')) {
+    //         this.setState({ weatherImage: "Snowflake-white.png" })
+    //     } //else if (weatherDescription.includes("storm")){
+    //     //     this.setState({weatherImage:"Cloudy-white.png"})
+    //     // }
+    //     else {
+    //         console.log(`We don't have the image for ${weatherDescription}`)
+    //     }
+    // }
+
+
+    getWeatherData = async () => {
+        try {
+            fetch("localhost:5000/api/users/weather/", {
+                method: "GET",
+                headers: {
+                    'x-auth-token': await AsyncStorage.getItem('jwt'),
+                    'Content-Type': 'application/json'
+                }
+            }).then(result => {
+                this.setState({
+                    weatherDescription: result.weatherDesc,
+                    temp: result.temp,
+                    humidity: result.humidity
+                })
+            }).catch(error => {
+                console.log("there was an error");
+            })
+        } catch (error) {
+            console.log("There was an error");
+        }
     }
+
     render() {
-        const daysOfTheWeek = ["Mon", "Tue", "Wes", "Thu", " Fri", "Sat", "Sun"]
+
         return (
             <View style={styles.container}>
-                <View style={styles.dashHeader}>
-                    <Text style={styles.greetingText}>{this.state.timeOfDay}</Text>
-                    <Text style={styles.greetingText}>{this.state.username}</Text>
+                <Text style={styles.dashDate}>{this.state.date}</Text>
+                <Text style={styles.dashTitle}>{this.state.weatherDescription}</Text>
+                <View style={{ width: "100%", height: "50%", justifyContent: "center", alignItems: "center" }}>
+                    <Image source={require('../assets/Clouds-white.png')} />
                 </View>
-                <View style={styles.midSection}>
-                    <Text style={styles.dashTitle}> 5 Day </Text>
-                    <Text style={styles.dashTitle}> Forcast </Text>
-                    <Text style={styles.dashDate}> {this.state.date} </Text>
+                <View style={styles.weatherInformation}>
+                    <Text style={styles.weatherData}>{this.state.temp}</Text>
+                    <Text style={styles.weatherData}>{this.state.humidity}</Text>
                 </View>
-                <View style={styles.weatherContainer}>
-                    <View style={styles.daysOfTheWeek}>
-                        {daysOfTheWeek.map((day, index) => {
-                            return (
-                                <Text style={styles.day} key={index}>{day}</Text>
-                            )
-                        })}
-                    </View>
-                    <View style={styles.weatherInformation}>
-                        {this.state.weekForcast.map((day, index) => {
-
-                            if (day === "cloudy") return <Image key={index} style={{ width: "10%", height: "auto" }} source={require('../assets/clouds.png')} />
-
-                        })}
-                    </View>
-                </View>
-
             </View>
         )
     }
@@ -68,17 +90,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#01404D',
         fontWeight: 'bold',
     },
-    dashHeader: {
-        marginTop: "10%"
-    },
-    greetingText: {
-        color: "white",
-        fontSize: 25,
-        textAlign: "center",
-    },
-    midSection: {
-        marginTop: "10%",
-    },
     dashTitle: {
         color: "white",
         fontSize: 18,
@@ -90,20 +101,12 @@ const styles = StyleSheet.create({
         fontSize: 15,
         textAlign: "center"
     },
-    weatherContainer: {
-
-    },
-    daysOfTheWeek: {
-        flex: 1,
-        flexDirection: "row"
-    },
-    day: {
-        color: "#fff",
-        margin: 10,
-    },
     weatherInformation: {
         flex: 1,
         flexDirection: "row",
+    },
+    weatherData: {
+        color: "#fff",
     }
 
 })
