@@ -7,12 +7,9 @@ class UserWeather extends React.Component {
     constructor() {
         super();
         this.state = {
-            country: "",
-            city: "",
-            zip: "",
-            weather: "",
-            data: {},
-            dataSent: false,
+            country: "United states",
+            city: "New York City",
+            zip: "10033",
 
         }
         this.changeTexthandler = this.changeTexthandler.bind(this);
@@ -24,70 +21,27 @@ class UserWeather extends React.Component {
         this.setState({ [state]: event.text });
     }
 
-    //fetches the weaher data
-    callForWeather = () => {
-        // fetch("url", {
-        //     method: "POST",
-        //     body: {
-        //         zipCode: this.state.zip
-        //     }
-        // }).then(result => {
-        //     //depending of weather the state will determine the correct image to use
-        //     switch (result.data.main) {
-        //         case "Rain": this.setState({ weather: "rain" })
-        //             break;
-        //         case "Cloudy": this.setState({ weather: "Cloudy" })
-        //             break;
-        //     }
-        //     //saving the result to the state
-        //     this.setState({ data: result });
-
-        // }).catch(error => console.log("something went wrong"))
-    }
-
     //this helper stores the users location and moves on to the next step
     storeData = async () => {
 
         const { country, city, zip } = this.state;
 
+        if (country === "" || city === "" || zip === "") {
+            console.log("the values came out null")
+            return alert("Please fill out where you are located");
+        }
+
         try {
+            console.log("inside the try method");
             await AsyncStorage.multiSet([['Country', country], ['City', city], ['Zip', zip]]);
-            const data = await AsyncStorage.multiGet(['Country', 'City', 'Zip']);
-            if (data) {
-                /**
-                 *  TODO: 
-                 *  Need to implement the api
-                 *  Once the data is saved send the data to the weather api 
-                 *  The data returned is going to show at the bottom where the button ois
-                 */
+            this.props.navigation.navigate('Schedule');
 
-                this.callForWeather()
-
-                // This will render the component and change the button to the current weather
-                this.setState({ dataSent: true });
-
-
-                /** 
-                 *  Once the button shows the current weather after 3 secs 
-                 *  send the user to the next step
-                 */
-
-                //once data is sent after 3 seconds the screen will change
-                if (this.state.dataSent) {
-                    setTimeout(() => {
-                        this.props.navigation.navigate('RainPreference')
-                    }, 3000);
-                }
-
-
-            } else {
-                alert("Please fill out where you are located")
-                console.log("the values came out null")
-            }
         } catch (error) {
             console.log(`There was an error: ${error}`);
             alert("error please try again later");
         }
+
+
 
     }
 
@@ -97,29 +51,18 @@ class UserWeather extends React.Component {
 
                 <Text style={styles.text1}>My Location</Text>
 
-                <TextInput onChange={(e) => this.changeTexthandler(e, 'country')} placeholder={'Country'} style={styles.TextInput1} />
-                <TextInput onChange={(e) => this.changeTexthandler(e, 'city')} placeholder={'City'} style={styles.TextInput1} />
-                <TextInput onChange={(e) => this.changeTexthandler(e, 'zip')} placeholder={'Zipcode'} style={styles.TextInput1} />
+                <TextInput value={this.state.country} onChange={(e) => this.changeTexthandler(e, 'country')} placeholder={'Country'} style={styles.TextInput1} />
+                <TextInput value={this.state.city} onChange={(e) => this.changeTexthandler(e, 'city')} placeholder={'City'} style={styles.TextInput1} />
+                <TextInput value={this.state.zip} onChange={(e) => this.changeTexthandler(e, 'zip')} placeholder={'Zipcode'} style={styles.TextInput1} />
 
-                {/* if true show image with weather else show prompt on button */}
-                {/* want to change the style in which the temp and humidity shows */}
-                {this.state.dataSent ?
-                    <View style={styles.weatherView}>
-                        <Text style={{ textAlign: "center", fontSize: 25, marginBottom: "10%" }}>Weather Type</Text>
-                        <View styles={styles.weatherPercentages}>
-                            <Text style={{ textAlign: "center", fontSize: 18 }}>H: 40</Text>
-                            <Text style={{ textAlign: "center", fontSize: 18 }}>T: 40</Text>
-                        </View>
-                    </View> :
+                <TouchableOpacity
+                    onPress={this.storeData}
+                    style={styles.button}
+                >
+                    <Text style={styles.buttonTxt}>next</Text>
+                </TouchableOpacity>
 
-                    <TouchableOpacity
-                        onPress={this.storeData}
-                        style={styles.button}
-                    >
-                        <Text style={styles.buttonTxt}>Press here for the weather in your area </Text>
-                    </TouchableOpacity>
 
-                }
             </View>
         );
     }
@@ -150,16 +93,17 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
         color: '#ffffff',
-        margin: 20
+        marginTop: "20%"
     },
     button: {
-        backgroundColor: '#0D7100',
-        width: "50%",
-        padding: 30,
         alignItems: 'center',
-        justifyContent: "center",
-        borderRadius: 20,
-        marginTop: 40,
+        backgroundColor: '#0D7100',
+        color: '#ffffff',
+        padding: 10,
+        marginTop: "20%",
+        width: 125,
+        fontSize: 50,
+        borderRadius: 5
     },
     buttonTxt: {
         fontSize: 20,

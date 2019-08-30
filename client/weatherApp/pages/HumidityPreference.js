@@ -16,12 +16,7 @@ class HumidityPreference extends React.Component {
 
         try {
             await AsyncStorage.setItem('humidityPercentage', this.state.humidityPercentage);
-            const value = await AsyncStorage.getItem('humidityPercentage');
-
-            //if the value has been saved then it moves to the next page
-            if (value != null) {
-                this.props.navigation.navigate("SignUp");
-            }
+            this.props.navigation.navigate("SignUp");
 
         } catch (error) {
             console.log(`There was an error: ${error}`)

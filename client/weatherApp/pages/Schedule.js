@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TextInput, Picker, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, View, TextInput, Picker, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
 class Schedule extends React.Component {
@@ -37,11 +37,6 @@ class Schedule extends React.Component {
         let value = [];
         //aysncStorage saves the users data till we send it all together when user signs up
         try {
-            /**
-             * TODO:
-             *  Test in the backend to check if none of the days are empty string (default state value)
-             */
-
             await AsyncStorage.multiSet([['Monday', M], ['Tuesday', Tu], ['Wenensday', W], ['Thursday', Th], ['Friday', F], ['Saturday', Sa], ['Sunday', Su]]);
             value = await AsyncStorage.multiGet(['Monday', 'Tuesday', 'Wenensday', 'Thursday', 'Friday', 'Saturday', 'Sunday']);
         } catch (e) {
@@ -49,25 +44,10 @@ class Schedule extends React.Component {
             console.log(`${e} there was an error`);
         }
 
-        /**
-         * TODO:
-         * Under this line we need to a call to the weather api 
-         * map the data into state.data
-         * getData() function
-         */
-
-
-
-
-        /**
-         * TODO:
-         * Change the placeholders to the picker
-         */
-
         //checks if all of the values are not empty;
         const noEmptyStrings = value.every(innerArray => innerArray[1] != " ")
         // this changes the contexts and renders new data to the screen if all states have values
-        if (noEmptyStrings) this.setState({ sent: true })
+        if (noEmptyStrings) this.props.navigation.navigate("RainPreference");
         else alert("please select a time for all days");
 
     }
@@ -79,7 +59,7 @@ class Schedule extends React.Component {
         return (
             // this is the main container
             <View style={styles.container}>
-                <Text style={styles.headerText}> {this.state.sent ? "During the week I leave my house at" : "Heres how your week is looking like"} </Text>
+                <Text style={styles.headerText}> During the week I leave my house at </Text>
 
                 {/* this the container holding the data that needs to be sent to the backend */}
                 <View>
@@ -87,6 +67,7 @@ class Schedule extends React.Component {
                         this.state.data.map((data, index) => {
                             return (
                                 <View key={index}>
+                                    <Image source={require("../assets/clouds.png")} />
                                     <Text style={styles.boxes}>{data}</Text>
                                 </View>
                             )
@@ -98,11 +79,11 @@ class Schedule extends React.Component {
                                 <View key={index} style={styles.form}>
                                     <Text style={styles.formText}>{text}:</Text>
                                     <Picker
-                                        placholder={"Please select a time"}
                                         selectedValue={this.state[text]}
                                         onValueChange={(e) => this.inputText(e, text)}
                                         style={styles.boxes}
                                     >
+                                        <Picker.Item label="Pick a time" value="" />
                                         <Picker.Item label="12 AM" value="12 AM" />
                                         <Picker.Item label="1 AM" value="1 AM" />
                                         <Picker.Item label="2 AM" value="2 AM" />
@@ -161,6 +142,7 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         textAlign: "center",
         marginBottom: 20,
+        marginTop: 20,
     },
     defaultText: {
         color: "white",
@@ -176,10 +158,10 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
     form: {
-        flex: 1,
         width: "100%",
         flexDirection: "row",
         justifyContent: "center",
+        alignItems: "center"
     },
     formText: {
         color: "white",
@@ -188,7 +170,7 @@ const styles = StyleSheet.create({
     },
     boxes: {
         backgroundColor: "white",
-        width: "40%",
+        width: "60%",
         marginLeft: 20,
         marginBottom: 10,
     },

@@ -34,7 +34,6 @@ const styles = StyleSheet.create({
         margin: 24,
         padding: 15,
         fontSize: 20,
-        fontWeight: 'bold',
         textAlign: 'center',
         color: '#ffffff',
         lineHeight: 33,
@@ -46,7 +45,7 @@ const styles = StyleSheet.create({
         padding: 10,
         marginTop: 15,
         width: 125,
-        borderRadius: 20,
+        borderRadius: 5,
         fontWeight: 'bold'
     },
     //MAIN STYLING

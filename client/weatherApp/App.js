@@ -30,7 +30,7 @@ const AppNavigator = createStackNavigator({
   Dashboard: Dashboard,
 
 }, {
-    initialRouteName: "SignUp",
+    initialRouteName: "Home",
     headerMode: 'none',
     navigationOptions: {
       headerVisible: false,

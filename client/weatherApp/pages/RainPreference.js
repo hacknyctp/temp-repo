@@ -14,12 +14,7 @@ class RainPreference extends React.Component {
     storeData = async () => {
         try {
             await AsyncStorage.setItem('rainPercentage', this.state.rainPercentage);
-            const value = await AsyncStorage.getItem('rainPercentage');
-
-            //if the value has been saved then it moves to the next page
-            if (value != null) {
-                this.props.navigation.navigate("HumidityPreference");
-            }
+            this.props.navigation.navigate("HumidityPreference");
 
         } catch (error) {
             console.log(`There was an error: ${error}`)
@@ -97,11 +92,11 @@ const styles = StyleSheet.create({
     },
     textBox: {
         textAlign: "center",
-        maxWidth: "40%",
         backgroundColor: "white",
         fontSize: 18,
         justifyContent: "center",
         marginLeft: "10%",
+        maxWidth: "100%",
     },
     btnView: {
         width: "100%",

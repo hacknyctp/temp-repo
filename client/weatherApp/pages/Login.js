@@ -8,8 +8,8 @@ export default class Login extends Component {
     constructor() {
         super();
         this.state = {
-            email: "",
-            password: "",
+            email: "sparky@gmail.com",
+            password: "1234567",
             token: "",
         }
         this.onChangeHandler = this.onChangeHandler.bind(this);
@@ -17,18 +17,20 @@ export default class Login extends Component {
 
     //sends data to the backend for verification
     sendData = async () => {
+        const body = {
+            "email": this.state.email,
+            "password": this.state.password
+        }
+
         fetch('https://whether-api.herokuapp.com/api/users/login', {
             method: "POST",
-            body: {
-                "email": this.state.email,
-                "password": this.state.password
-            },
             headers: {
                 "Content-Type": "application/json"
             },
+            body: JSON.stringify(body),
         }).then(result => result.json())
             .then(result => {
-                if (result.status != 200) alert(result.errors[0].msg);
+                if (result.status === 400 || result.status === 500) console.log(result);
                 else {
                     this.successLogin(result.token);
                 }
@@ -38,6 +40,7 @@ export default class Login extends Component {
 
     //when the user login is successful, it saves the token and move to dashboard
     successLogin = async (token) => {
+        console.log(token)
         await AsyncStorage.setItem('jwt', token);
         this.props.navigation.navigate("Dashboard");
     }
@@ -115,7 +118,7 @@ const styles = StyleSheet.create({
         marginTop: 15,
         width: 125,
         fontSize: 50,
-        borderRadius: 20
+        borderRadius: 5
 
     },
     viewMainStyle: { //  styling for all the components

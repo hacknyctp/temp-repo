@@ -22,7 +22,7 @@ export default class SignUp extends Component {
             await AsyncStorage.multiSet([['username', username], ['email', email], ['password', password], ['retypePassword', retypePassword]]);
             sentData = await AsyncStorage.multiGet(['username',
                 'email',
-                'passowrd',
+                'password',
                 'Monday',
                 'Tuesday',
                 'Wenensday',
@@ -34,29 +34,32 @@ export default class SignUp extends Component {
                 'humidityPercentage'
             ])
         } catch (error) {
-            console.log(`There was an error => ${error}`)
+            console.log(`There was an error => ${error}`);
         }
 
-
-
-        this.mapToObject(sentData)
-
-
-
+        this.mapToObject(sentData);
     }
 
     /**
-     * maping sendData to an object called body = {}
+     * Maping sendData to an object called body = {}
      * the format of the data is going to be a nested array
      * InnerArray[0] is the key
      * InnerArrar[1] is the value
     */
-    mapToObject = async () => {
+    mapToObject = (data) => {
         const body = {};
         data.map(index => {
-            body[index[0]] = index[1]
+            //change the value of percentages and zip to integers
+            if (index[0].includes("Percentage") || index[0].includes("zip")) {
+                let value = parseInt(index[1]);
+                body[index[0]] = value;
+            }
+            //else just map them to object
+            else body[index[0]] = index[1]
+
         })
 
+        //passing the body information to sign up method
         this.signUpUser(body)
     }
 
@@ -76,22 +79,25 @@ export default class SignUp extends Component {
             }
         }).then(result => result.json())
             .then(result => {
-                if (result.status != 200) alert(console.log("error"))
-                else this.saveTokenAndDash(/**This is where the token is sent*/)
+                if (result.status == 400) console.log(result);
+                else saveTokenAndDash(result)
+            }).catch(error => {
+                console.log(error)
             })
     }
 
-
-    saveTokenAndDash = async () => {
+    //the token passed here, saved in async storage and proceed to dashboard
+    saveTokenAndDash = async (token) => {
         try {
-            await AsyncStorage.setItem('jwt', "token");
-            this.props.naviagtion.navigate("Dashboard");
+            await AsyncStorage.setItem('jwt', token);
+            this.props.navigation.navigate("Dashboard");
         } catch (error) {
             console.log("There was an error saveTokenAndDash")
         }
 
     }
 
+    //this function handles the event changes within the textinput and saves it to the corresponding state
     onChangeHandler = (event, name) => {
         this.setState({ [name]: event.nativeEvent.text });
     }
