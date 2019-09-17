@@ -1,9 +1,4 @@
-
-
-# Introduction
-- Customise when you want to be notfied
-![Cusotomize when you want to be notfied] (https://gyazo.com/09e1b0eca5871d56d7715a673ad79118)
-
+# The weather app that tells you whether or not to bring an umbrella
 
 ## Customize Notifications, Set Your Schedule, and see Your Week in One View!
 ![enter image description here](https://gyazo.com/09e1b0eca5871d56d7715a673ad79118.com) ![Set your shedule](https://gyazo.com/3a21974cd1473ab4a71b0a0a71a64f2d.com) ![](https://gyazo.com/7effa8c455d9b19147ecc2c65caacdd3.com)
@@ -22,7 +17,6 @@
 	- When loggin in, the given password is hashed and checked against the encrypted stored 
 - Passwords are encrypted via bcrypt :)
 
-# The weather app that tells you whether or not to bring an umbrella
 ## Branches/Workflow
 -  App will be continuously deployed on the `master` branch
   - Back end development on the `backend` branch
