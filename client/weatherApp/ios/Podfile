@@ -9,6 +9,8 @@ target 'weatherApp' do
 
   # Pods for weatherApp
 
+  pod 'RNFirebase', :path => '../node_modules/react-native-firebase'
+
   target 'weatherAppTests' do
     inherit! :search_paths
     # Pods for testing

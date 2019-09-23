@@ -12,6 +12,8 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
 
+import io.invertase.firebase.notifications.RNFirebaseNotificationsPackage;
+
 import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
@@ -26,8 +28,10 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       @SuppressWarnings("UnnecessaryLocalVariable")
       List<ReactPackage> packages = new PackageList(this).getPackages();
-      // Packages that cannot be autolinked yet can be added manually here, for example:
+      // Packages that cannot be autolinked yet can be added manually here, for
+      // example:
       // packages.add(new MyReactNativePackage());
+      packages.add(new RNFirebaseNotificationsPackage());
       return packages;
     }
 
@@ -47,4 +51,5 @@ public class MainApplication extends Application implements ReactApplication {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
   }
+
 }

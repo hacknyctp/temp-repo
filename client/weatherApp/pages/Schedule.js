@@ -57,14 +57,6 @@ class Schedule extends React.Component {
 
     render() {
 
-        firebase.auth()
-            .signInAnonymously()
-            .then(credential => {
-                if (credential) {
-                    console.log('default app user ->', credential.user.toJSON());
-                }
-            });
-
 
         // Build a channel
         const channel = new firebase.notifications.Android.Channel('test-channel', 'Test Channel', firebase.notifications.Android.Importance.Max)
@@ -73,11 +65,11 @@ class Schedule extends React.Component {
         // Create the channel
         firebase.notifications().android.createChannel(channel);
 
-        // Build a channel group
-        const channelGroup = new firebase.notifications.Android.ChannelGroup('test-group', 'Test Channel Group');
+        // // Build a channel group
+        // const channelGroup = new firebase.notifications.Android.ChannelGroup('test-group', 'Test Channel Group');
 
-        // Create the channel group
-        firebase.notifications().android.createChannelGroup(channelGroup);
+        // // Create the channel group
+        // firebase.notifications().android.createChannelGroup(channelGroup);
 
 
         // Build notification
@@ -86,12 +78,13 @@ class Schedule extends React.Component {
             .setTitle('My notification title')
             .setBody('My notification body')
             .setData({
-                key1: 'value1',
-                key2: 'value2',
+                key1: 'It is going to rain',
+                key2: 'Grab your umbrealla before leaving',
             });
+
         //As Android provides some bespoke notification functionality, we have segregated this into an AndroidNotification class 
         notification
-            .android.setChannelId('channelId')
+            .android.setChannelId('test-channel')
             .android.setSmallIcon('ic_launcher');
 
         // Display the notification
