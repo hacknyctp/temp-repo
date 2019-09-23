@@ -1,12 +1,14 @@
 import React from 'react';
 import { Text, View, TextInput, Picker, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import firebase from 'react-native-firebase';
 
 class Schedule extends React.Component {
 
     constructor() {
         super();
         this.state = {
+            //the states of the week are the times the user leaves the house
             M: " ",
             Tu: " ",
             W: " ",
@@ -54,6 +56,55 @@ class Schedule extends React.Component {
 
 
     render() {
+
+        firebase.auth()
+            .signInAnonymously()
+            .then(credential => {
+                if (credential) {
+                    console.log('default app user ->', credential.user.toJSON());
+                }
+            });
+
+
+        // Build a channel
+        const channel = new firebase.notifications.Android.Channel('test-channel', 'Test Channel', firebase.notifications.Android.Importance.Max)
+            .setDescription('My apps test channel');
+
+        // Create the channel
+        firebase.notifications().android.createChannel(channel);
+
+        // Build a channel group
+        const channelGroup = new firebase.notifications.Android.ChannelGroup('test-group', 'Test Channel Group');
+
+        // Create the channel group
+        firebase.notifications().android.createChannelGroup(channelGroup);
+
+
+        // Build notification
+        const notification = new firebase.notifications.Notification()
+            .setNotificationId('notificationId')
+            .setTitle('My notification title')
+            .setBody('My notification body')
+            .setData({
+                key1: 'value1',
+                key2: 'value2',
+            });
+        //As Android provides some bespoke notification functionality, we have segregated this into an AndroidNotification class 
+        notification
+            .android.setChannelId('channelId')
+            .android.setSmallIcon('ic_launcher');
+
+        // Display the notification
+        firebase.notifications().displayNotification(notification);
+
+        // Schedule the notification for 1 minute in the future
+        const date = new Date();
+        date.setMinutes(date.getMinutes() + 1);
+
+        firebase.notifications().scheduleNotification(notification, {
+            fireDate: date.getTime(),
+        })
+
         // these days of the week are going to be mapped to correspond to each box and state
         const daysOfTheWeek = ["M", "Tu", "W", "Th", "F", "Sa", "Su"];
         return (

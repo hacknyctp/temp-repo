@@ -11,6 +11,9 @@ import HumidityPreference from "./pages/HumidityPreference.js";
 import { createStackNavigator, createAppContainer } from "react-navigation";
 
 const App = () => {
+
+
+
   return (
     <View style={{ backgroundColor: '#01404D', height: "100%" }}>
       <WelcomePage />
